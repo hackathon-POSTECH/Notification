@@ -1,0 +1,6 @@
+﻿services:
+  notification.api:
+    image: notification.api
+    build:
+      context: .
+      dockerfile: NOTIFICATION.API/Dockerfile

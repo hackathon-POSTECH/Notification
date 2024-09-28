@@ -1,45 +1,33 @@
 using MassTransit;
 using Microsoft.Extensions.Configuration;
+using NOTIFICATION.APPLICATION.UseCases.SendAppointmentNotificationToDoctor;
+using NOTIFICATION.APPLICATION.UseCases.SendAppointmentNotificationToPatient;
 using Notification.DOMAIN.Messages;
-using NOTIFICATION.INFRA.abstractions;
-using System.Threading.Tasks;
 
 namespace NOTIFICATION.INFRA.RabbitMQ.Consumers
 {
-    public class ApointmentNotificationDoctorConsumer : IConsumer<AppointmentNotificationDoctor>
+    public class AppointmentNotificationConsumer : IConsumer<AppointmentNotification>
     {
         private readonly IConfiguration _configuration;
+        private readonly SendAppointmentNotificationToPatient _sendAppointmentNotificationToPatient;
+        private readonly SendAppointmentNotificationToDoctor _sendAppointmentNotificationToDoctor;
 
-        public ApointmentNotificationDoctorConsumer(IConfiguration configuration)
+        public AppointmentNotificationConsumer(IConfiguration configuration,
+            SendAppointmentNotificationToPatient sendAppointmentNotificationToPatient,
+            SendAppointmentNotificationToDoctor sendAppointmentNotificationToDoctor)
         {
             _configuration = configuration;
+            _sendAppointmentNotificationToPatient = sendAppointmentNotificationToPatient;
+            _sendAppointmentNotificationToDoctor = sendAppointmentNotificationToDoctor;
         }
 
-        public async Task Consume(ConsumeContext<AppointmentNotificationDoctor> context)
+
+        public async Task Consume(ConsumeContext<AppointmentNotification> context)
         {
             var message = context.Message;
 
-            await SendNotificationAsync(message);
-        }
-
-        private async Task SendNotificationAsync(AppointmentNotificationDoctor message)
-        {
-            var smtpSettings = _configuration.GetSection("SmtpSettings");
-
-            var notification = NotificationFactory.CreateNotification(
-                type: NotificationType.Email,
-                smtpPort: int.Parse(smtpSettings["Port"]!),
-                smtpServer: smtpSettings["Server"]!,
-                smtpUser: smtpSettings["User"]!,
-                smtpPassword: smtpSettings["Password"]!
-            );
-
-            var notificationSender = new NotificationSender(notification);
-
-            await notificationSender.SendAsync(
-                message.Doctor.Email,
-                "Agendamento realizado com sucesso",
-                message.Message);
+            await _sendAppointmentNotificationToDoctor.Execute(message);
+            await _sendAppointmentNotificationToPatient.Execute(message);
         }
     }
 }

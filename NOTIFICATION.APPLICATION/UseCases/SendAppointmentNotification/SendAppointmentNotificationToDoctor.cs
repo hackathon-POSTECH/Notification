@@ -1,26 +1,29 @@
 using Microsoft.Extensions.Configuration;
+using NOTIFICATION.DOMAIN.Entities;
+using NOTIFICATION.DOMAIN.Factories;
 using Notification.DOMAIN.Messages;
-using NOTIFICATION.INFRA.Factories;
-using NOTIFICATION.INFRA.strategies;
 
 namespace NOTIFICATION.APPLICATION.UseCases.SendAppointmentNotificationToDoctor;
 
 public class SendAppointmentNotificationToDoctor
 {
     private readonly IConfiguration _configuration;
+    private readonly INotificationFactory _notificationFactory;
 
     public SendAppointmentNotificationToDoctor(
-        IConfiguration configuration
+        IConfiguration configuration,
+        INotificationFactory notificationFactory
     )
     {
         _configuration = configuration;
+        _notificationFactory = notificationFactory;
     }
 
     public async Task Execute(AppointmentNotification appointmentNotification)
     {
         var smtpSettings = _configuration.GetSection("SmtpSettings");
 
-        var notification = NotificationFactory.CreateNotification(
+        var notification = _notificationFactory.CreateNotification(
             type: NotificationType.Email,
             smtpPort: int.Parse(smtpSettings["Port"]!),
             smtpServer: smtpSettings["Server"]!,
@@ -28,7 +31,7 @@ public class SendAppointmentNotificationToDoctor
             smtpPassword: smtpSettings["Password"]!
         );
 
-        var notificationSender = new NotificationSender(notification);
+        var notificationSender = _notificationFactory.CreateNotificationStrategy(notification);
 
         await notificationSender.SendAsync(
             appointmentNotification.Doctor.Email,

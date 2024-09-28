@@ -1,19 +1,15 @@
-using NOTIFICATION.INFRA.abstractions;
+using NOTIFICATION.DOMAIN.Entities;
+using NOTIFICATION.DOMAIN.Factories;
+using NOTIFICATION.DOMAIN.Strategies;
 using NOTIFICATION.INFRA.Adapters.Notification;
+using NOTIFICATION.INFRA.strategies;
 
 namespace NOTIFICATION.INFRA.Factories;
 
-public enum NotificationType
+public class NotificationFactory : INotificationFactory
 {
-    Email,
-    Sms
-}
-
-public class NotificationFactory
-{
-    private Notification
-
-    public static INotification CreateNotification(NotificationType type, string smtpServer = null, int smtpPort = 0,
+    public INotification CreateNotification(NotificationType type, string smtpServer = null,
+        int smtpPort = 0,
         string smtpUser = null, string smtpPassword = null)
     {
         switch (type)
@@ -32,5 +28,10 @@ public class NotificationFactory
             default:
                 throw new NotSupportedException($"Notification type {type} is not supported");
         }
+    }
+
+    public INotificationStrategy CreateNotificationStrategy(INotification notification)
+    {
+        return new NotificationSender(notification);
     }
 }

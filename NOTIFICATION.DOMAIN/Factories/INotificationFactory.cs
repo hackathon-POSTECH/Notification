@@ -1,6 +1,12 @@
-namespace NOTIFICATION.DOMAIN.Factories;
+using NOTIFICATION.DOMAIN.Entities;
+using NOTIFICATION.DOMAIN.Strategies;
 
-public interface INotificationFactory
+namespace NOTIFICATION.DOMAIN.Factories
 {
-    
+    public interface INotificationFactory
+    {
+        INotification CreateNotification(NotificationType type, string smtpServer, int smtpPort, string smtpUser,
+            string smtpPassword);
+        INotificationStrategy CreateNotificationStrategy(INotification notification);
+    }
 }

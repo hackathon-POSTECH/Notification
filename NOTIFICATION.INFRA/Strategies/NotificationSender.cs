@@ -1,8 +1,9 @@
-using NOTIFICATION.INFRA.abstractions;
+using NOTIFICATION.DOMAIN.Entities;
+using NOTIFICATION.DOMAIN.Strategies;
 
 namespace NOTIFICATION.INFRA.strategies;
 
-public class NotificationSender
+public class NotificationSender : INotificationStrategy
 {
     private readonly INotification _notificationStrategy;
 
