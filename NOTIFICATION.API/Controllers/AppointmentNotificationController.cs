@@ -5,11 +5,11 @@ namespace NOTIFICATION.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class NotificationController : ControllerBase
+public class AppointmentNotificationController : ControllerBase
 {
     private readonly INotificationService _notificationService;
 
-    public NotificationController(INotificationService notificationService)
+    public AppointmentNotificationController(INotificationService notificationService)
     {
         _notificationService = notificationService;
     }
@@ -17,8 +17,15 @@ public class NotificationController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> SendNotification([FromBody] string notificationText)
     {
-        await _notificationService.SendNotificationAsync();
+        try
+        {
+            await _notificationService.SendNotificationAsync();
 
-        return Ok("Notification sent.");
+            return Ok("Notification sent.");
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
+        }
     }
 }
