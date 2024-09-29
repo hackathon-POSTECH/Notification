@@ -1,6 +1,6 @@
 using NOTIFICATION.DOMAIN.Entities;
 
-namespace NOTIFICATION.TESTS.Domain.Entities
+namespace NOTIFICATION.TEST.Domain.Entities
 {
     [TestFixture]
     public class DoctorTests
