@@ -10,6 +10,7 @@ using NOTIFICATION.DOMAIN.Factories;
 using NOTIFICATION.INFRA.Adapters.Http;
 using NOTIFICATION.INFRA.Factories;
 using NOTIFICATION.INFRA.RabbitMQ.Consumers;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<AppointmentNotificationConsumer>();
 
+
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("localhost", "/", h =>
@@ -45,7 +47,15 @@ builder.Services.AddMassTransit(x =>
         cfg.Message<DoctorResponseDTO>(x => x.SetEntityName("get-doctor"));
 
         cfg.ReceiveEndpoint("notification_queue",
-            e => { e.ConfigureConsumer<AppointmentNotificationConsumer>(context); });
+            e =>
+            {
+                e.ConfigureConsumeTopology = false;
+                e.Bind("exchange_notification", x =>
+                {
+                    x.RoutingKey = "notification_queue";
+                });
+                e.ConfigureConsumer<AppointmentNotificationConsumer>(context);
+            });
     });
 });
 
