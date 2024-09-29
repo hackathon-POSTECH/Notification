@@ -1,10 +1,12 @@
 using MassTransit;
 using NOTIFICATION.APPLICATION;
+using NOTIFICATION.APPLICATION.Abstractions.Http;
 using NOTIFICATION.APPLICATION.Gateways;
 using NOTIFICATION.APPLICATION.UseCases;
 using NOTIFICATION.APPLICATION.UseCases.SendAppointmentNotificationToDoctor;
 using NOTIFICATION.APPLICATION.UseCases.SendAppointmentNotificationToPatient;
 using NOTIFICATION.DOMAIN.Factories;
+using NOTIFICATION.INFRA.Adapters.Http;
 using NOTIFICATION.INFRA.Factories;
 using NOTIFICATION.INFRA.RabbitMQ.Consumers;
 
@@ -22,6 +24,7 @@ builder.Services.AddScoped<IPatientGateway, PatientGateway>();
 builder.Services.AddScoped<IDoctorGateway, DoctorGateway>();
 builder.Services.AddScoped<FindDoctorById>();
 builder.Services.AddScoped<FindPatientById>();
+builder.Services.AddHttpClient<IHttpClientService, HttpClientService>();
 
 var rabbitMqSettings = builder.Configuration.GetSection("RabbitMQ");
 
