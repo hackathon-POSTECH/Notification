@@ -14,8 +14,4 @@
       <PackageReference Include="MassTransit" Version="8.2.6-develop.2005" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Interfaces\" />
-    </ItemGroup>
-
 </Project>

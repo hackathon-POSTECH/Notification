@@ -25,12 +25,12 @@ public class SendAppointmentNotificationToDoctor
         _findDoctorById = findDoctor;
     }
 
-    public async Task Execute(AppointmentNotificationEvent appointmentNotificationEvent)
+    public async Task Execute(AppointmentNotificationMessage appointmentNotificationMessage)
     {
         try
         {
-            var doctor = await _findDoctorById.Execute(appointmentNotificationEvent.Doctor);
-            var patient = await _findPatientById.Execute(appointmentNotificationEvent.Patient);
+            var doctor = await _findDoctorById.Execute(appointmentNotificationMessage.Doctor);
+            var patient = await _findPatientById.Execute(appointmentNotificationMessage.Patient);
 
             var smtpSettings = _configuration.GetSection("SmtpSettings");
 
@@ -50,8 +50,8 @@ public class SendAppointmentNotificationToDoctor
                 BuildMessageDoctor(
                     doctor,
                     patient,
-                    appointmentNotificationEvent.AppointmentDate,
-                    appointmentNotificationEvent.AppointmentTime
+                    appointmentNotificationMessage.AppointmentDate,
+                    appointmentNotificationMessage.AppointmentTime
                 )
             );
         }
