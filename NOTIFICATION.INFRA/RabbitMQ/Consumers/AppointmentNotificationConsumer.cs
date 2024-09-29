@@ -6,7 +6,7 @@ using Notification.DOMAIN.Messages;
 
 namespace NOTIFICATION.INFRA.RabbitMQ.Consumers
 {
-    public class AppointmentNotificationConsumer : IConsumer<AppointmentNotification>
+    public class AppointmentNotificationConsumer : IConsumer<AppointmentNotificationEvent>
     {
         private readonly IConfiguration _configuration;
         private readonly SendAppointmentNotificationToPatient _sendAppointmentNotificationToPatient;
@@ -22,7 +22,7 @@ namespace NOTIFICATION.INFRA.RabbitMQ.Consumers
         }
 
 
-        public async Task Consume(ConsumeContext<AppointmentNotification> context)
+        public async Task Consume(ConsumeContext<AppointmentNotificationEvent> context)
         {
             var message = context.Message;
 

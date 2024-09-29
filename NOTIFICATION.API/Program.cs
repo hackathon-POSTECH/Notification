@@ -1,5 +1,7 @@
 using MassTransit;
 using NOTIFICATION.APPLICATION;
+using NOTIFICATION.APPLICATION.Gateways;
+using NOTIFICATION.APPLICATION.UseCases;
 using NOTIFICATION.APPLICATION.UseCases.SendAppointmentNotificationToDoctor;
 using NOTIFICATION.APPLICATION.UseCases.SendAppointmentNotificationToPatient;
 using NOTIFICATION.DOMAIN.Factories;
@@ -16,6 +18,10 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<INotificationFactory, NotificationFactory>();
 builder.Services.AddScoped<SendAppointmentNotificationToPatient>();
 builder.Services.AddScoped<SendAppointmentNotificationToDoctor>();
+builder.Services.AddScoped<IPatientGateway, PatientGateway>();
+builder.Services.AddScoped<IDoctorGateway, DoctorGateway>();
+builder.Services.AddScoped<FindDoctorById>();
+builder.Services.AddScoped<FindPatientById>();
 
 var rabbitMqSettings = builder.Configuration.GetSection("RabbitMQ");
 

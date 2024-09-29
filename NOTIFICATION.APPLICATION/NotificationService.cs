@@ -14,19 +14,9 @@ public class NotificationService : INotificationService
 
     public async Task SendNotificationAsync()
     {
-        var message = new AppointmentNotification(
-            doctor: new Doctor(
-                doctorName: "Jônatas Alves",
-                doctorId: Guid.NewGuid(),
-                doctorEmail: "alvesjonatas99@gmail.com",
-                doctorPhoneNumber: ""
-            ),
-            patient: new Patient(
-                patientName: "Jônatas Alves",
-                patientId: Guid.NewGuid(),
-                patientEmail: "alvesjonatas99@gmail.com",
-                patientPhoneNumber: ""
-            ),
+        var message = new AppointmentNotificationEvent(
+            doctor: Guid.NewGuid(),
+            patient: Guid.NewGuid(),
             appointmentDate: DateTime.Now,
             appointmentTime: new TimeSpan(10, 0, 0)
         );

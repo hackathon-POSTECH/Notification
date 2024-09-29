@@ -2,17 +2,20 @@ using NOTIFICATION.APPLICATION.Gateways;
 using NOTIFICATION.DOMAIN.Entities;
 using NOTIFICATION.DOMAIN.Errors;
 
-namespace NOTIFICATION.APPLICATION.UseCases.FindPatientById;
+namespace NOTIFICATION.APPLICATION.UseCases;
 
 public class FindPatientById
 {
-    public Patient patient;
+    private IPatientGateway _patientGatewayInterface;
 
-    private PatientGateway _patientGateway;
+    public FindPatientById(IPatientGateway patientGatewayInterface)
+    {
+        _patientGatewayInterface = patientGatewayInterface;
+    }
 
     public async Task<Patient> Execute(Guid patientId)
     {
-        var patient = await _patientGateway.findPatientById(patientId);
+        var patient = await _patientGatewayInterface.FindPatientById(patientId);
 
         if (patient is null)
             throw new PatientNotFoundException($"Patient with ID {patientId} was not found.");
