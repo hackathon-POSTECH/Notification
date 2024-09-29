@@ -4,7 +4,7 @@ namespace Notification.DOMAIN.Messages
 {
     public class AppointmentNotificationMessage
     {
-        public Guid Doctor { get; } // Nome do médico
+        public Guid Doctor { get; }
         public Guid Patient { get; }
         public DateTime AppointmentDate { get; }
         public TimeSpan AppointmentTime { get; }

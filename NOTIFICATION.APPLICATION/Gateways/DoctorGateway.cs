@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using NOTIFICATION.APPLICATION.Abstractions.Http;
+using NOTIFICATION.APPLICATION.DTOs;
 using NOTIFICATION.DOMAIN.Entities;
 
 namespace NOTIFICATION.APPLICATION.Gateways
@@ -25,7 +26,8 @@ namespace NOTIFICATION.APPLICATION.Gateways
                     throw new Exception("URI Service Doctor not found in appsettings.json");
 
                 var response =
-                    await _httpClientService.RequestAsync<DoctorResponse>(URIServiceDoctor + "verifyDoctor/" + doctorId,
+                    await _httpClientService.RequestAsync<DoctorResponseDTO>(
+                        URIServiceDoctor + "verifyDoctor/" + doctorId,
                         HttpMethod.Get);
 
                 var doctor = Doctor.Create(
@@ -44,12 +46,4 @@ namespace NOTIFICATION.APPLICATION.Gateways
             }
         }
     }
-}
-
-interface DoctorResponse
-{
-    Guid Id { get; set; }
-    string Name { get; set; }
-    string Email { get; set; }
-    string Phone { get; set; }
 }
