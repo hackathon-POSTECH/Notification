@@ -45,6 +45,8 @@ builder.Services.AddMassTransit(x =>
 
         cfg.Message<DoctorRequestDTO>(x => x.SetEntityName("get-doctor"));
         cfg.Message<DoctorResponseDTO>(x => x.SetEntityName("get-doctor"));
+        cfg.Message<PatientRequestDTO>(x => x.SetEntityName("get-doctor"));
+        cfg.Message<PatientResponseDTO>(x => x.SetEntityName("get-doctor"));
 
         cfg.ReceiveEndpoint("notification_queue",
             e =>
