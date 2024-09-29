@@ -18,4 +18,9 @@ public class Patient
         Email = patientEmail;
         Phone = patientPhoneNumber;
     }
+
+    public static Patient Create(Guid patientId, string patientName, string patientEmail, string patientPhoneNumber)
+    {
+        return new Patient(patientId, patientName, patientEmail, patientPhoneNumber);
+    }
 }
