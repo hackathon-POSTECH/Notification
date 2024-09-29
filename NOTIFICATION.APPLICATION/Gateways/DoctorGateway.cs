@@ -28,7 +28,16 @@ namespace NOTIFICATION.APPLICATION.Gateways
                 var response =
                     await _httpClientService.RequestAsync<DoctorResponseDTO>(
                         URIServiceDoctor + "verifyDoctor/" + doctorId,
-                        HttpMethod.Get);
+                        HttpMethod.Head,
+                        null,
+                        new Dictionary<string, string>(
+                            new List<KeyValuePair<string, string>>
+                            {
+                                new("Authorization",
+                                    "Bearer " +
+                                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.px9SiYNYDnbw3EG7AriQqk59KQcupoh02nDijQpJAMg")
+                            })
+                    );
 
                 var doctor = Doctor.Create(
                     response.Id,

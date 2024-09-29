@@ -1,5 +1,3 @@
-using NOTIFICATION.DOMAIN.Entities;
-
 namespace Notification.DOMAIN.Messages
 {
     public class AppointmentNotificationMessage
