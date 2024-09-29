@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.2">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+        <PackageReference Include="NUnit" Version="4.2.2" />
+        <PackageReference Include="NUnit.Analyzers" Version="3.9.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+        <PackageReference Include="ReportGenerator" Version="5.3.10" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="NUnit.Framework" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="API\" />
+      <Folder Include="APPLICATION\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NOTIFICATION.API\NOTIFICATION.API.csproj" />
+      <ProjectReference Include="..\NOTIFICATION.APPLICATION\NOTIFICATION.APPLICATION.csproj" />
+      <ProjectReference Include="..\NOTIFICATION.DOMAIN\NOTIFICATION.DOMAIN.csproj" />
+      <ProjectReference Include="..\NOTIFICATION.INFRA\NOTIFICATION.INFRA.csproj" />
+    </ItemGroup>
+
+</Project>
