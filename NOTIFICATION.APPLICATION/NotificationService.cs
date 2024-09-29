@@ -1,6 +1,5 @@
 using MassTransit;
 using NOTIFICATION.APPLICATION;
-using NOTIFICATION.DOMAIN.Entities;
 using Notification.DOMAIN.Messages;
 
 public class NotificationService : INotificationService

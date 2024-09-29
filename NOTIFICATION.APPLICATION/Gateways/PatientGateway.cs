@@ -1,19 +1,33 @@
+using MassTransit;
+using NOTIFICATION.APPLICATION.DTOs;
 using NOTIFICATION.DOMAIN.Entities;
 
 namespace NOTIFICATION.APPLICATION.Gateways
 {
     public class PatientGateway : IPatientGateway
     {
-        public Task<Patient?> FindPatientById(Guid doctorId)
+        private readonly IRequestClient<PatientRequestDTO> _requestClient;
+
+        public PatientGateway(IRequestClient<PatientRequestDTO> requestClient)
         {
-            var doctor = new Patient(
-                doctorId,
-                "Jonatas Alves",
-                "alvesjonatas99@gmail.com",
-                "(123) 456-7890"
+            _requestClient = requestClient;
+        }
+
+        public async Task<Patient?> FindPatientById(Guid patientId)
+        {
+            var response = await _requestClient.GetResponse<PatientResponseDTO>(new PatientRequestDTO
+            {
+                PatientId = patientId
+            });
+
+            var patient = Patient.Create(
+                response.Message.Id,
+                response.Message.Name,
+                response.Message.Email,
+                response.Message.Phone
             );
 
-            return Task.FromResult<Patient?>(doctor);
+            return patient;
         }
     }
 }

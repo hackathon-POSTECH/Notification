@@ -6,3 +6,6 @@ riderModule.iml
 
 **/TestResults
 **/RelatorioCobertura
+
+.DS_Store
+

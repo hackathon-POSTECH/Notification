@@ -1,5 +1,4 @@
-using Microsoft.Extensions.Configuration;
-using NOTIFICATION.APPLICATION.Abstractions.Http;
+using MassTransit;
 using NOTIFICATION.APPLICATION.DTOs;
 using NOTIFICATION.DOMAIN.Entities;
 
@@ -7,52 +6,28 @@ namespace NOTIFICATION.APPLICATION.Gateways
 {
     public class DoctorGateway : IDoctorGateway
     {
-        private readonly IHttpClientService _httpClientService;
-        private readonly IConfiguration _configuration;
+        private readonly IRequestClient<DoctorRequestDTO> _requestClient;
 
-        public DoctorGateway(IHttpClientService httpClientService, IConfiguration configuration)
+        public DoctorGateway(IRequestClient<DoctorRequestDTO> requestClient)
         {
-            _httpClientService = httpClientService;
-            _configuration = configuration;
+            _requestClient = requestClient;
         }
 
         public async Task<Doctor?> FindDoctorById(Guid doctorId)
         {
-            try
+            var response = await _requestClient.GetResponse<DoctorResponseDTO>(new DoctorRequestDTO
             {
-                var URIServiceDoctor = _configuration.GetSection("URIs")["Doctor"];
+                DoctorId = doctorId
+            });
 
-                if (URIServiceDoctor is null)
-                    throw new Exception("URI Service Doctor not found in appsettings.json");
+            var doctor = Doctor.Create(
+                response.Message.Id,
+                response.Message.Name,
+                response.Message.Email,
+                response.Message.Phone
+            );
 
-                var response =
-                    await _httpClientService.RequestAsync<DoctorResponseDTO>(
-                        URIServiceDoctor + "verifyDoctor/" + doctorId,
-                        HttpMethod.Head,
-                        null,
-                        new Dictionary<string, string>(
-                            new List<KeyValuePair<string, string>>
-                            {
-                                new("Authorization",
-                                    "Bearer " +
-                                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.px9SiYNYDnbw3EG7AriQqk59KQcupoh02nDijQpJAMg")
-                            })
-                    );
-
-                var doctor = Doctor.Create(
-                    response.Id,
-                    response.Name,
-                    response.Email,
-                    response.Phone
-                );
-
-                return doctor;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return doctor;
         }
     }
 }

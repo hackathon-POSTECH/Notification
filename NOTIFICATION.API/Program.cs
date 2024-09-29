@@ -1,6 +1,7 @@
 using MassTransit;
 using NOTIFICATION.APPLICATION;
 using NOTIFICATION.APPLICATION.Abstractions.Http;
+using NOTIFICATION.APPLICATION.DTOs;
 using NOTIFICATION.APPLICATION.Gateways;
 using NOTIFICATION.APPLICATION.UseCases;
 using NOTIFICATION.APPLICATION.UseCases.SendAppointmentNotificationToDoctor;
@@ -39,6 +40,9 @@ builder.Services.AddMassTransit(x =>
             h.Username(rabbitMqSettings["Username"]);
             h.Password(rabbitMqSettings["Password"]);
         });
+
+        cfg.Message<DoctorRequestDTO>(x => x.SetEntityName("get-doctor"));
+        cfg.Message<DoctorResponseDTO>(x => x.SetEntityName("get-doctor"));
 
         cfg.ReceiveEndpoint("notification_queue",
             e => { e.ConfigureConsumer<AppointmentNotificationConsumer>(context); });
