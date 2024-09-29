@@ -27,7 +27,7 @@ namespace NOTIFICATION.APPLICATION.Gateways
 
                 var response =
                     await _httpClientService.RequestAsync<PatientResponseDTO>(
-                        URIServicePatient + "verifyPatient/" + patientId,
+                        URIServicePatient + "getbyid/" + patientId,
                         HttpMethod.Head,
                         null,
                         new Dictionary<string, string>(
