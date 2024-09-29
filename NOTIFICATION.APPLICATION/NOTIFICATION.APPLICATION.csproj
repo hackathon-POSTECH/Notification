@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Abstractions\Factories\" />
+      <Folder Include="Interfaces\" />
     </ItemGroup>
 
 </Project>
