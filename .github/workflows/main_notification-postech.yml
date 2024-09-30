@@ -52,6 +52,6 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'NOTIFICATION-POSTECH'
-          slot-name: 'Production'
+          slot-name: 'Develop'
           package: .
           
