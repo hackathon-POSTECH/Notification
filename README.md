@@ -54,7 +54,7 @@ The system sends an email to the doctor after a patient schedules a consultation
 ## Setup & Installation
 
 ### Prerequisites
-- .NET 6 SDK
+- .NET 8 SDK
 - Docker & Docker Compose
 - RabbitMQ
 - PostgreSQL
